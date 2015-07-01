@@ -1,9 +1,11 @@
+set runtimepath+=$HOME/.vim,$VIMRUNTIME,~/.vim/after,$VIM,C:/vim
+
 " Enforce Vim mode, so we use vim instead of vi
 set nocompatible
 " Disable File Type detection, required for vundle
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=$HOME/.vim/bundle/Vundle.vim
 call vundle#begin()
 " Vundle itself
 Plugin 'gmarik/Vundle.vim'
