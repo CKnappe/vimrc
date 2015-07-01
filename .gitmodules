@@ -1,0 +1,6 @@
+[submodule "/home/osboxes/.vim/bundle/Vundle.Vim"]
+	path = /home/osboxes/.vim/bundle/Vundle.Vim
+	url = http://github.com/gmarik/vundle.git
+[submodule "/home/osboxes/.vim/bundle/Vundle.vim"]
+	path = /home/osboxes/.vim/bundle/Vundle.vim
+	url = http://github.com/gmarik/vundle.git
