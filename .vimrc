@@ -63,3 +63,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extension#tabline#fnamemod = ':t'
 " Set netrw list view to show the entire tree
 let g:netrw_liststyle = 3
+
+" gvim settings
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
