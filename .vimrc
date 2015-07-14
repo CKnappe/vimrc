@@ -22,13 +22,28 @@ Plugin 'rking/ag.vim'
 " Install easytags
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
+" Install vim-reload (Enables automatic reload of changed scripts
+Plugin 'xolox/vim-reload'
 " Install TagHighlight
 " Plugin 'vim-scripts/TagHighlight'
 " Install tagbar
 Plugin 'majutsushi/tagbar'
 " Install improved syntax highlighting
 Plugin 'octol/vim-cpp-enhanced-highlight'
+" Install dispatch.vim (asynchronous builds)
+Plugin 'tpope/vim-dispatch'
+" Install dbg.vim (debugger)
+Plugin 'Shougo/vimproc.vim'
+Plugin 'yuratomo/dbg.vim'
+" Install vim-localvimrc (load project specific .vimrc)
+Plugin 'embear/vim-localvimrc'
+" Install vim-easyclip (No longer copy upon delete)
+Plugin 'tpope/vim-repeat'
+Plugin 'svermeulen/vim-easyclip'
 call vundle#end()
+
+" Enable Substitute command in vim-easyclip
+let g:EasyClipUseSubstituteDefaults = 1
 
 " Configure ctrlp.vim
 let g:ctrlp_extensions = ['line']
@@ -85,6 +100,11 @@ set hlsearch
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
 
+" Configure dbg.vim
+let g:dbg#command_shell = 'cmd.exe'
+let g:dbg#shell_prompt = '> '
+let g:dbg#command_cdb = 'C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x86\cdb.exe'
+
 " Show just the filename
 let g:airline#extension#tabline#fnamemod = ':t'
 " Set netrw list view to show the entire tree
@@ -113,12 +133,24 @@ augroup END
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
+" Remove question dialog from localvimrc
+let g:localvimrc_whitelist = 'F:/psmtec0031-0033_PTB_GIT/.lvimrc'
+
 " Enable Project specific .vimrc
 set exrc
 " Allow only secure commands in the project specific .vimrc
 "set secure
 
+" Prevent ycm from constantly asking whether or not to load ycm_extra_conf
+let g:ycm_confirm_extra_conf = 0
 
 " Simplify tag navigation
 map <c-,> :YcmCompleter GoToDefinition
 map <c-.> :YCmCompleter GotoDeclaration
+nnoremap t <C-]>
+
+" To be able to switch unsaved buffers
+set hidden
+" Make search non case sensitive
+set ignorecase
+
