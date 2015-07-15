@@ -1,5 +1,7 @@
 set runtimepath+=$HOME/.vim,$VIMRUNTIME,~/.vim/after,$VIM,C:/vim
 
+" Change mapleader to space
+let mapleader =" "
 " Enforce Vim mode, so we use vim instead of vi
 set nocompatible
 " Disable File Type detection, required for vundle
@@ -143,6 +145,8 @@ set exrc
 
 " Prevent ycm from constantly asking whether or not to load ycm_extra_conf
 let g:ycm_confirm_extra_conf = 0
+" Prevent ycm from opening the preview window
+set completeopt-=preview
 
 " Simplify tag navigation
 map <c-,> :YcmCompleter GoToDefinition
@@ -154,3 +158,4 @@ set hidden
 " Make search non case sensitive
 set ignorecase
 
+nmap <silent> <Leader>e :Explore<CR>
