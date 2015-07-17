@@ -1,4 +1,5 @@
 command! -nargs=0 AddInclude call s:AddInclude()
+command! -nargs=0 Ai call s:AddInclude()
 
 function! Relpath(filename)
     let cwd = expand('%:p')
@@ -36,9 +37,18 @@ endfunction
 function! InsertInclude(filename)
     let old_pos = getpos('.')
     call cursor(line('$'), 0)
-    let lastIncludeLine = search("^#include", "Wb")
-    call append(lastIncludeLine, "#include \"".a:filename."\"")
-    call cursor(old_pos[1] + 1, old_pos[2])
+
+    let include = "#include \"".a:filename."\""
+    let alreadyInsertedPos = search("^".include."$")
+
+    if alreadyInsertedPos == 0
+        let lastIncludeLine = search("^#include", "Wb")
+        call append(lastIncludeLine, include)
+        call cursor(old_pos[1] + 1, old_pos[2])
+    else
+        echo "Already Included"
+        call cursor(old_pos[1], old_pos[2])
+    endif
 endfunction
 
 function! IsValid(answer)
@@ -51,8 +61,19 @@ endfunction
 
 function! s:AddInclude()
     let wordUnderCursor = expand("<cword>")
-    let tags = taglist('^'.wordUnderCursor)
-    let tags = filter(tags, 'v:val["kind"] == "c"')
+    let wholeWordUnderCursor = expand("<cWORD>")
+    let tags = taglist('^'.wordUnderCursor.'$')
+    " Only include header files
+    let tags = filter(tags, 'v:val["filename"] =~ ".hpp" || v:val["filename"] =~ ".h"')
+    " Exclude namespaces
+    let tags = filter(tags, 'v:val["kind"] != "n"')
+    if(len(tags) > 1)
+        let wordParts = split(wholeWordUnderCursor, wordUnderCursor)
+        if(len(wordParts) > 0)
+            let wordParts2 = split(wordParts[0],":")
+            let tags = filter(tags, 'v:val["namespace"] =~ "'.wordParts2[0].'"')
+        endif
+    endif
     if len(tags) == 1
         call InsertInclude(Relpath(tags[0]['filename']))
     elseif len(tags) > 0 && len(tags) < 10
