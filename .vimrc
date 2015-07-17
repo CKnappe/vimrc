@@ -147,10 +147,15 @@ set exrc
 let g:ycm_confirm_extra_conf = 0
 " Prevent ycm from opening the preview window
 set completeopt-=preview
+" ycm should now populate the location list, making it easier to jump to
+" errors
+let g:ycm_always_populate_location_list = 1
 
 " Simplify tag navigation
-map <c-,> :YcmCompleter GoToDefinition
-map <c-.> :YCmCompleter GotoDeclaration
+nnoremap <c-,> :YcmCompleter GoToDefinition
+nnoremap <c-.> :YCmCompleter GotoDeclaration
+nnoremap <a-,> :lprevious<cr>
+nnoremap <a-.> :lnext<cr>
 nnoremap t <C-]>
 
 " To be able to switch unsaved buffers
