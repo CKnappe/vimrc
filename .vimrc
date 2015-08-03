@@ -267,3 +267,6 @@ nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 " Ensure that *.ui files are identified as xml files (Syntax highlighting)
 au BufNewFile,BufRead *.ui set filetype=xml
+
+" Enabled linebreak in quickfix
+au FileType qf setlocal wrap linebreak 
