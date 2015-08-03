@@ -1,7 +1,7 @@
 set runtimepath+=$HOME/.vim,$VIMRUNTIME,~/.vim/after,$VIM,C:/vim
 
 " Set font
-set guifont=Source\ Code\ Pro:h9
+set guifont=Consolas:h8
 " Change mapleader to space
 let mapleader =" "
 " Enforce Vim mode, so we use vim instead of vi
