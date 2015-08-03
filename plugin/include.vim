@@ -1,6 +1,24 @@
 command! -nargs=0 AddInclude call s:AddInclude()
 command! -nargs=0 Ai call s:AddInclude()
 
+" Works like sort(), optionally taking in a comparator (just like the
+" original), except that duplicate entries will be removed.
+function! SortUnique( list, ... )
+  let dictionary = {}
+  for i in a:list
+      if i != ''
+        execute "let dictionary[ '" . i . "' ] = ''"
+    endif
+  endfor
+  let result = []
+  if ( exists( 'a:1' ) )
+    let result = sort( keys( dictionary ), a:1 )
+  else
+    let result = sort( keys( dictionary ) )
+  endif
+  return result
+endfunction
+
 function! Relpath(filename)
     let cwd = expand('%:p')
     let cwd_split = split(cwd, ":")
@@ -31,6 +49,21 @@ function! Relpath(filename)
         let counter += 1
     endwhile
     let filename = substitute(filename, "\\\\", "/", "g")
+    let paths = split(&path, ",")
+    let paths = SortUnique(paths)
+    for path_name in paths
+        let path_split = split(path_name,":")
+        if len(path_split) > 1
+            let path_name = path_split[1]
+        endif
+        let path_name = substitute(path_name, "\\\\", "/", "g")
+        let path_name = substitute(path_name, "\/[^\/]*\/\\.\\.", "", "g")
+        let path_name = substitute(path_name, "\/", "\\", "g")
+        let shorten_attempt = substitute(a:filename, "\\V".escape(path_name, "\\"), "", "g")
+        if len(path_name) > 1 && (len(shorten_attempt) < len(filename) || filename[0] == '.')
+            let filename = substitute(substitute(shorten_attempt, "^\\\\", "", "g"), "\\\\", "/", "g")
+        endif
+    endfor
     return filename
 endfunction
 
@@ -67,12 +100,18 @@ function! s:AddInclude()
     let tags = filter(tags, 'v:val["filename"] =~ ".hpp" || v:val["filename"] =~ ".h"')
     " Exclude namespaces
     let tags = filter(tags, 'v:val["kind"] != "n"')
-    if(len(tags) > 1)
-        let wordParts = split(wholeWordUnderCursor, wordUnderCursor)
-        if(len(wordParts) > 0)
-            let wordParts2 = split(wordParts[0],":")
-            let tags = filter(tags, 'v:val["namespace"] =~ "'.wordParts2[0].'"')
+    let wordParts = split(wholeWordUnderCursor, wordUnderCursor)
+    if(len(wordParts) > 0)
+        let wordParts2 = split(wordParts[0],":")
+        let tags = filter(tags, '!has_key(v:val, "namespace") || v:val["namespace"] =~ "'.wordParts2[0].'"')
+        let tags_class_exact_match = filter( tags, 'v:val["kind"] == "c" && has_key(v:val, "namespace") && v:val["namespace"] == "'.wordParts2[0].'"')
+        if(len(tags_class_exact_match) >= 1)
+            let tags = tags_class_exact_match
         endif
+    endif
+    let tags_no_members = filter(tags, 'v:val["kind"] != "m"')
+    if(len(tags_no_members) >= 1)
+        let tags = tags_no_members
     endif
     if len(tags) == 1
         call InsertInclude(Relpath(tags[0]['filename']))
