@@ -60,6 +60,14 @@ Plugin 'aehlke/vim-rename3'
 Plugin 'takac/vim-hardtime'
 " Install easymotion (Easier navigation)
 Plugin 'easymotion/vim-easymotion'
+" Install QFGrep (Filter Quickfix window)
+Plugin 'sk1418/QFGrep' " Used to remove unnecessary messages in quickfix
+" Install BClose (Deleting a buffer without closing the window)
+Plugin 'rbgrouleff/bclose.vim'
+" Install rename.vim (Renaming current file)
+Plugin 'danro/rename.vim'
+" Install a.vim (Switch between header and source)
+Plugin 'vim-scripts/a.vim'
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
@@ -270,3 +278,5 @@ au BufNewFile,BufRead *.ui set filetype=xml
 
 " Enabled linebreak in quickfix
 au FileType qf setlocal wrap linebreak 
+" Erase unnecessary messages in quickfix
+au FileType qf QFGrepPat ^||\ \+.*.cpp
