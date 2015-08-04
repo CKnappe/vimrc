@@ -74,6 +74,7 @@ Plugin 'vim-scripts/a.vim'
 
 call vundle#end()
 
+
 " Enable Substitute command in vim-easyclip
 let g:EasyClipUseSubstituteDefaults = 1
 
