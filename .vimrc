@@ -279,4 +279,4 @@ au BufNewFile,BufRead *.ui set filetype=xml
 " Enabled linebreak in quickfix
 au FileType qf setlocal wrap linebreak 
 " Erase unnecessary messages in quickfix
-au FileType qf QFGrepPat ^||\ \+.*.cpp
+au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
