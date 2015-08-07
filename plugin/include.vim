@@ -33,22 +33,22 @@ function! Relpath(filename)
     else
         let filename = filename_split[1]
     endif
+    let filename = substitute(filename, "\\\\", "/", "g")
     let cwd_split = split(cwd, "\\")
     let subdir_counter = 0
     for cwd_entry in cwd_split
         let old_filename = filename
-        let filename = substitute(filename, "^\\\\" . cwd_entry  , "", "")
+        let filename = substitute(filename, "^/" . cwd_entry  , "", "")
         if filename == old_filename
             let subdir_counter += 1
         endif
     endfor
-    let filename = substitute(filename, "^\\\\" , "", "")
+    let filename = substitute(filename, "^/" , "", "")
     let counter = 1
     while counter < subdir_counter
-        let filename = "..\\".filename
+        let filename = "../".filename
         let counter += 1
     endwhile
-    let filename = substitute(filename, "\\\\", "/", "g")
     let paths = split(&path, ",")
     let paths = SortUnique(paths)
     for path_name in paths
@@ -58,8 +58,9 @@ function! Relpath(filename)
         endif
         let path_name = substitute(path_name, "\\\\", "/", "g")
         let path_name = substitute(path_name, "\/[^\/]*\/\\.\\.", "", "g")
-        let path_name = substitute(path_name, "\/", "\\", "g")
-        let shorten_attempt = substitute(a:filename, "\\V".escape(path_name, "\\"), "", "g")
+        let filename_to_shorten = substitute(a:filename, "\\\\", "/", "g")
+        let shorten_attempt = substitute(filename_to_shorten, "\\V".escape(path_name, "\\"), "", "g")
+        let shorten_attempt = substitute( shorten_attempt, "^\/", "", "")
         if len(path_name) > 1 && (len(shorten_attempt) < len(filename) || filename[0] == '.')
             let filename = substitute(substitute(shorten_attempt, "^\\\\", "", "g"), "\\\\", "/", "g")
         endif
@@ -114,7 +115,8 @@ function! s:AddInclude()
         let tags = tags_no_members
     endif
     if len(tags) == 1
-        call InsertInclude(Relpath(tags[0]['filename']))
+        let name = Relpath(tags[0]['filename'])
+        call InsertInclude(name)
     elseif len(tags) > 0 && len(tags) < 10
         let answer="x"
         while !IsValid(answer)
