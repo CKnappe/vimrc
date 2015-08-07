@@ -101,6 +101,8 @@ function! s:AddInclude()
     let tags = filter(tags, 'v:val["filename"] =~ ".hpp" || v:val["filename"] =~ ".h"')
     " Exclude namespaces
     let tags = filter(tags, 'v:val["kind"] != "n"')
+    let sub = "\\(\\)\\[\\]\{\\}\\<\\>"
+    let wholeWordUnderCursor = substitute( wholeWordUnderCursor, "^.*[".sub."]\\([^".sub."]*".wordUnderCursor."[^".sub."]*\\).*$", "\\1", "")
     let wordParts = split(wholeWordUnderCursor, wordUnderCursor)
     if(len(wordParts) > 0)
         let wordParts2 = split(wordParts[0],":")
