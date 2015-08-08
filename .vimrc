@@ -28,7 +28,14 @@ Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
 " Install improved syntax highlighting
 Plugin 'octol/vim-cpp-enhanced-highlight'
+" Install rust.vim
+Plugin 'rust-lang/rust.vim'
+" Install racer
+Plugin 'phildawes/racer'
 call vundle#end()
+
+" Configure racer
+let g:racer_cmd = "<path-to-racer/target/release/racer"
 
 " Configure ctrlp.vim
 let g:ctrlp_extensions = ['line']
