@@ -281,3 +281,8 @@ au BufNewFile,BufRead *.ui set filetype=xml
 au FileType qf setlocal wrap linebreak 
 " Erase unnecessary messages in quickfix
 au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
+
+" Let r and R Update the quickfix windows if you are inside of it
+:autocmd BufReadPost quickfix nnoremap <buffer> r :Copen<CR>
+:autocmd BufReadPost quickfix nnoremap <buffer> R :Copen<CR>G
+
