@@ -286,3 +286,40 @@ au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
 :autocmd BufReadPost quickfix nnoremap <buffer> r :Copen<CR>
 :autocmd BufReadPost quickfix nnoremap <buffer> R :Copen<CR>G
 
+" Define CPP-Package (Compiler etc. for CPP)
+function! LoadCPPPackage()
+    echo "Loading CPP Package"
+    nnoremap <leader>j :call DoCompile("PCDebug")<cr>
+    nnoremap <leader>k :call DoExecute("PCDebug")<cr>
+
+    command! -nargs=1 CompleteCompile call DoCompleteCompile(<f-args>)
+    command! -nargs=1 Compile call DoCompile(<f-args>)
+    command! -nargs=1 Execute call DoExecute(<f-args>)
+    command! -nargs=0 Retag call DoRetag()
+
+    function! DoCompleteCompile(type)
+        execute "!start taskkill /T /F /IM windbg.exe"
+        call setqflist([]) 
+        comp msbuild 
+        execute "Make Maximus.sln /p:Configuration=".a:type." /p:Platform=Win32 /m /t:Clean,Build"
+    endfunction
+
+    function! DoCompile(type)
+        execute "!start taskkill /T /F /IM windbg.exe"
+        call setqflist([]) 
+        comp msbuild 
+        execute "Make Maximus.sln /p:Configuration=".a:type." /p:Platform=Win32 /m"
+    endfunction
+
+    function! DoExecute(type)
+        execute "!start taskkill /T /F /IM windbg.exe"
+        execute "Spawn windbg -c \"g\" ..\\_output\\".a:type."\\Engine.exe"
+    endfunction
+
+    function! DoRetag()
+        execute "Spawn ctags -R -f ../SourceCode/tags ../SourceCode/*"
+    endfunction
+endfunction
+
+" Define AG (Project wide search)
+command! -nargs=1 AG Ag --ignore "tags" <f-args> .
