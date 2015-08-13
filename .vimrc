@@ -68,12 +68,17 @@ Plugin 'rbgrouleff/bclose.vim'
 Plugin 'danro/rename.vim'
 " Install a.vim (Switch between header and source)
 Plugin 'vim-scripts/a.vim'
+" Install rust.vim
+Plugin 'rust-lang/rust.vim'
+" Install racer
+Plugin 'phildawes/racer'
+call vundle#end()
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
 
-call vundle#end()
-
+" Configure racer
+let g:racer_cmd = "<path-to-racer/target/release/racer"
 
 " Enable Substitute command in vim-easyclip
 let g:EasyClipUseSubstituteDefaults = 1
