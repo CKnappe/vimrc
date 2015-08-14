@@ -68,17 +68,12 @@ Plugin 'rbgrouleff/bclose.vim'
 Plugin 'danro/rename.vim'
 " Install a.vim (Switch between header and source)
 Plugin 'vim-scripts/a.vim'
-" Install rust.vim
-Plugin 'rust-lang/rust.vim'
-" Install racer
-Plugin 'phildawes/racer'
-call vundle#end()
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
 
-" Configure racer
-let g:racer_cmd = "<path-to-racer/target/release/racer"
+call vundle#end()
+
 
 " Enable Substitute command in vim-easyclip
 let g:EasyClipUseSubstituteDefaults = 1
@@ -292,7 +287,8 @@ au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
 :autocmd BufReadPost quickfix nnoremap <buffer> R :Copen<CR>G
 
 " Define CPP-Package (Compiler etc. for CPP)
-function! LoadCPPPackage()
+function! LoadCPPPackage(projectPath)
+    let g:cpp_package_project_path = a:projectPath
     echo "Loading CPP Package"
     nnoremap <leader>j :call DoCompile("PCDebug")<cr>
     nnoremap <leader>k :call DoExecute("PCDebug")<cr>
@@ -302,18 +298,18 @@ function! LoadCPPPackage()
     command! -nargs=1 Execute call DoExecute(<f-args>)
     command! -nargs=0 Retag call DoRetag()
 
-    function! DoCompleteCompile(type)
+    function! DoCompleteCompile(type, path, )
         execute "!start taskkill /T /F /IM windbg.exe"
         call setqflist([]) 
         comp msbuild 
-        execute "Make Maximus.sln /p:Configuration=".a:type." /p:Platform=Win32 /m /t:Clean,Build"
+        execute "Make ".g:cpp_package_project_path." /p:Configuration=".a:type." /p:Platform=Win32 /m /t:Clean,Build"
     endfunction
 
     function! DoCompile(type)
         execute "!start taskkill /T /F /IM windbg.exe"
         call setqflist([]) 
         comp msbuild 
-        execute "Make Maximus.sln /p:Configuration=".a:type." /p:Platform=Win32 /m"
+        execute "Make ".g:cpp_package_project_path." /p:Configuration=".a:type." /p:Platform=Win32 /m"
     endfunction
 
     function! DoExecute(type)
