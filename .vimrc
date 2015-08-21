@@ -68,6 +68,8 @@ Plugin 'rbgrouleff/bclose.vim'
 Plugin 'danro/rename.vim'
 " Install a.vim (Switch between header and source)
 Plugin 'vim-scripts/a.vim'
+" Install vim-autoclose (automatically add closing brackets, braces etc.)
+Plugin 'Townk/vim-autoclose'
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
