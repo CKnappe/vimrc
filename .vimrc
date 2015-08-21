@@ -94,6 +94,9 @@ let g:ctrlp_user_command = 'ag -l --nocolor --nogroup
                           \ --ignore "*.jpg"
                           \ --ignore "*.jpeg"
                           \ --ignore "*.py"
+                          \ --ignore "*.sln"
+                          \ --ignore "*.vcproj"
+                          \ --ignore "*.vcxproj"
                           \ -g "" %s'
 let g:ctrlp_match_func = { 'match' : 'pymatcher#PyMatch' }
 
@@ -245,12 +248,12 @@ let g:clang_format#style_options = {
     \ "MaxEmptyLinesToKeep" : 1,
     \ "NamespaceIndentation" : "All",
     \ "ObjCSpaceBeforeProtocolList" : "false",
-    \ "PenaltyBreakBeforeFirstCallParameter" : 1,
-    \ "PenaltyBreakComment" : 60,
-    \ "PenaltyBreakString" : 1000,
-    \ "PenaltyBreakFirstLessLess" : 120,
-    \ "PenaltyExcessCharacter" : 1000000,
-    \ "PenaltyReturnTypeOnItsOwnLine" : 200,
+    \ "PenaltyBreakBeforeFirstCallParameter" : 99999999,
+    \ "PenaltyBreakComment" : 1000,
+    \ "PenaltyBreakString" : 999999999,
+    \ "PenaltyBreakFirstLessLess" : 999999999,
+    \ "PenaltyExcessCharacter" : 5,
+    \ "PenaltyReturnTypeOnItsOwnLine" : 2000,
     \ "PointerBindsToType" : "true",
     \ "SpacesBeforeTrailingComments" : 2,
     \ "Cpp11BracedListStyle" : "true",
@@ -287,34 +290,44 @@ au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
 :autocmd BufReadPost quickfix nnoremap <buffer> R :Copen<CR>G
 
 " Define CPP-Package (Compiler etc. for CPP)
-function! LoadCPPPackage(projectPath)
+function! LoadCPPPackage(projectPath, projectType, projectPlatform)
     let g:cpp_package_project_path = a:projectPath
+    let g:cpp_package_project_type = a:projectType
+    let g:cpp_package_project_platform = a:projectPlatform
     echo "Loading CPP Package"
-    nnoremap <leader>j :call DoCompile("PCDebug")<cr>
-    nnoremap <leader>k :call DoExecute("PCDebug")<cr>
+    nnoremap <leader>j :call DoCompile()<cr>
+    nnoremap <leader>k :call DoExecute()<cr>
 
-    command! -nargs=1 CompleteCompile call DoCompleteCompile(<f-args>)
-    command! -nargs=1 Compile call DoCompile(<f-args>)
-    command! -nargs=1 Execute call DoExecute(<f-args>)
+    command! -nargs=* CompleteCompile call DoCompleteCompile(<f-args>)
+    command! -nargs=* Compile call DoCompile(<f-args>)
+    command! -nargs=* Execute call DoExecute(<f-args>)
     command! -nargs=0 Retag call DoRetag()
 
-    function! DoCompleteCompile(type, path, )
+    function! DoCompleteCompile(...)
+        let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
+        let platform = a:0 >= 2 ? a:2 : g:cpp_package_project_platform
+
         execute "!start taskkill /T /F /IM windbg.exe"
         call setqflist([]) 
         comp msbuild 
-        execute "Make ".g:cpp_package_project_path." /p:Configuration=".a:type." /p:Platform=Win32 /m /t:Clean,Build"
+        execute "Make ".g:cpp_package_project_path." /p:Configuration=".type." /p:Platform=".platform." /m /t:Clean,Build"
     endfunction
 
-    function! DoCompile(type)
+    function! DoCompile(...)
+        let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
+        let platform = a:0 >= 2 ? a:2 : g:cpp_package_project_platform
+
         execute "!start taskkill /T /F /IM windbg.exe"
         call setqflist([]) 
         comp msbuild 
-        execute "Make ".g:cpp_package_project_path." /p:Configuration=".a:type." /p:Platform=Win32 /m"
+        execute "Make ".g:cpp_package_project_path." /p:Configuration=".type." /p:Platform=".platform." /m"
     endfunction
 
-    function! DoExecute(type)
+    function! DoExecute(...)
+        let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
+
         execute "!start taskkill /T /F /IM windbg.exe"
-        execute "Spawn windbg -c \"g\" ..\\_output\\".a:type."\\Engine.exe"
+        execute "Spawn windbg -c \"g\" ..\\_output\\".type."\\Engine.exe"
     endfunction
 
     function! DoRetag()
@@ -324,3 +337,5 @@ endfunction
 
 " Define AG (Project wide search)
 command! -nargs=1 AG Ag --ignore "tags" <f-args> .
+
+set regexpengine=1
