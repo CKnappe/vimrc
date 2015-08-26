@@ -49,10 +49,8 @@ Plugin 'svermeulen/vim-easyclip'
 " Install qfdo (plugin to allow execution of search replace on every file in
 " quickfix)
 Plugin 'karlbright/qfdo.vim'
-" Install vim-clang-format (Automatic code formating)
-Plugin 'kana/vim-operator-user' " Requirement
-" Plugin 'Shougo/vimproc.vim' " Requirement (Already installed for dbg, but required here as well
-Plugin 'rhysd/vim-clang-format' " Actual Plugin
+" Install uncrustify-vim (Code reformating)
+Plugin 'ompugao/uncrustify-vim'
 " Install vim-rename3 Allows renaming the current file
 Plugin 'aehlke/vim-rename3'
 " Install hardtime (Adds timeout to hjkl keys, making it easier to learn
@@ -226,58 +224,12 @@ set foldmethod=syntax
 set foldlevelstart=99
 
 
-" Configure clang-format
-let g:clang_format#style_options = {
-    \ "AccessModifierOffset" : -2,
-    \ "ConstructorInitializerIndentWidth" : 4,
-    \ "AlignEscapedNewlinesLeft" : "true",
-    \ "AlignTrailingComments" : "true",
-    \ "AllowAllParametersOfDeclarationOnNextLine" : "false",
-    \ "AllowShortIfStatementsOnASingleLine" : "false",
-    \ "AllowShortFunctionsOnASingleLine" : "false",
-    \ "AllowShortLoopsOnASingleLine" : "false",
-    \ "AlwaysBreakTemplateDeclarations" : "true",
-    \ "AlwaysBreakBeforeMultilineStrings" : "true",
-    \ "BreakBeforeBinaryOperators" : "false",
-    \ "BreakConstructorInitializersBeforeComma" : "false",
-    \ "BinPackArguments" : "false",
-    \ "BinPackParameters" : "false",
-    \ "ColumnLimit" :     80,
-    \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "true",
-    \ "DerivePointerBinding" : "true",
-    \ "ExperimentalAutoDetectBinPacking" : "false",
-    \ "IndentCaseLabels" : "true",
-    \ "MaxEmptyLinesToKeep" : 1,
-    \ "NamespaceIndentation" : "All",
-    \ "ObjCSpaceBeforeProtocolList" : "false",
-    \ "PenaltyBreakBeforeFirstCallParameter" : 99999999,
-    \ "PenaltyBreakComment" : 1000,
-    \ "PenaltyBreakString" : 999999999,
-    \ "PenaltyBreakFirstLessLess" : 999999999,
-    \ "PenaltyExcessCharacter" : 5,
-    \ "PenaltyReturnTypeOnItsOwnLine" : 2000,
-    \ "PointerBindsToType" : "true",
-    \ "SpacesBeforeTrailingComments" : 2,
-    \ "Cpp11BracedListStyle" : "true",
-    \ "Standard" :        "Auto",
-    \ "IndentWidth" :     4,
-    \ "TabWidth" :        8,
-    \ "UseTab" :          "Never",
-    \ "BreakBeforeBraces" : "Attach",
-    \ "IndentFunctionDeclarationAfterType" : "true",
-    \ "SpacesInParentheses" : "true",
-    \ "SpacesInAngles" :  "false",
-    \ "SpaceInEmptyParentheses" : "false",
-    \ "SpacesInCStyleCastParentheses" : "false",
-    \ "SpaceAfterControlStatementKeyword" : "true",
-    \ "SpaceBeforeAssignmentOperators" : "true",
-    \ "ContinuationIndentWidth" : 6 }
+" Configure uncrustify-vim
+let g:uncrustify_cfg_file_path = "~/.vim/.uncrustify.cfg"
 
 " map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" Toggle auto formatting:
-nmap <Leader>C :ClangFormatAutoToggle<CR>
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :Uncrustify<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :Uncrustify<CR>
 
 " Ensure that *.ui files are identified as xml files (Syntax highlighting)
 au BufNewFile,BufRead *.ui set filetype=xml
