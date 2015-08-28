@@ -106,8 +106,8 @@ function! s:AddInclude()
     let wordParts = split(wholeWordUnderCursor, wordUnderCursor)
     if(len(wordParts) > 0)
         let wordParts2 = split(wordParts[0],":")
-        let tags = filter(tags, '!has_key(v:val, "namespace") || v:val["namespace"] =~ "'.wordParts2[0].'"')
-        let tags_class_exact_match = filter( tags, 'v:val["kind"] == "c" && has_key(v:val, "namespace") && v:val["namespace"] == "'.wordParts2[0].'"')
+        let tags = filter(copy(tags), '!has_key(v:val, "namespace") || v:val["namespace"] =~ "'.wordParts2[0].'"')
+        let tags_class_exact_match = filter( copy(tags), 'v:val["kind"] == "c" && has_key(v:val, "namespace") && v:val["namespace"] == "'.wordParts2[0].'"')
         if(len(tags_class_exact_match) >= 1)
             let tags = tags_class_exact_match
         endif
