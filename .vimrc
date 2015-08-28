@@ -30,17 +30,12 @@ Plugin 'xolox/vim-shell'
 Plugin 'xolox/vim-easytags'
 " Install vim-reload (Enables automatic reload of changed scripts
 Plugin 'xolox/vim-reload'
-" Install TagHighlight
-" Plugin 'vim-scripts/TagHighlight'
 " Install tagbar
 Plugin 'majutsushi/tagbar'
 " Install improved syntax highlighting
 Plugin 'octol/vim-cpp-enhanced-highlight'
 " Install dispatch.vim (asynchronous builds)
 Plugin 'tpope/vim-dispatch'
-" Install dbg.vim (debugger)
-Plugin 'Shougo/vimproc.vim'
-Plugin 'yuratomo/dbg.vim'
 " Install vim-localvimrc (load project specific .vimrc)
 Plugin 'embear/vim-localvimrc'
 " Install vim-easyclip (No longer copy upon delete)
@@ -69,7 +64,7 @@ Plugin 'vim-scripts/a.vim'
 " Install vim-autoclose (automatically add closing brackets, braces etc.)
 Plugin 'Townk/vim-autoclose'
 " Install Conque-Shell, integration a Shell into vim as a possible replacement
-" for the current dbg.vim and windbg
+" for the current windbg
 Plugin 'oplatek/Conque-Shell'
 
 " Default enabled hardtime
@@ -156,11 +151,6 @@ set hlsearch
 
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
-
-" Configure dbg.vim
-let g:dbg#command_shell = 'cmd.exe'
-let g:dbg#shell_prompt = '> '
-let g:dbg#command_cdb = 'C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x86\cdb.exe'
 
 " Show just the filename
 let g:airline#extension#tabline#fnamemod = ':t'
