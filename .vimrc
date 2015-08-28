@@ -44,8 +44,8 @@ Plugin 'svermeulen/vim-easyclip'
 " Install qfdo (plugin to allow execution of search replace on every file in
 " quickfix)
 Plugin 'karlbright/qfdo.vim'
-" Install uncrustify-vim (Code reformating)
-Plugin 'ompugao/uncrustify-vim'
+" Install vim-uncrustify (Code reformating)
+Plugin 'Cofyc/vim-uncrustify'
 " Install vim-rename3 Allows renaming the current file
 Plugin 'aehlke/vim-rename3'
 " Install hardtime (Adds timeout to hjkl keys, making it easier to learn
@@ -219,13 +219,9 @@ set foldmethod=syntax
 " Ensure that no folds are closed upon bufferopening
 set foldlevelstart=99
 
-
-" Configure uncrustify-vim
-let g:uncrustify_cfg_file_path = "~/.vim/.uncrustify.cfg"
-
 " map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :Uncrustify<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :Uncrustify<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :RangeUncrustify<CR>
 
 " Ensure that *.ui files are identified as xml files (Syntax highlighting)
 au BufNewFile,BufRead *.ui set filetype=xml
@@ -289,3 +285,9 @@ endfunction
 command! -nargs=1 AG Ag --ignore "tags" <f-args> .
 
 set regexpengine=1
+
+" Add <leader>cf as Uncrustify command
+autocmd FileType c noremap <buffer> <leader>cf :call Uncrustify('c')<CR>
+autocmd FileType c vnoremap <buffer> <leader>cf :call RangeUncrustify('c')<CR>
+autocmd FileType cpp noremap <buffer> <leader>cf :call Uncrustify('cpp')<CR>
+autocmd FileType cpp vnoremap <buffer> <leader>cf :call RangeUncrustify('cpp')<CR>
