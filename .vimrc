@@ -63,9 +63,9 @@ Plugin 'danro/rename.vim'
 Plugin 'vim-scripts/a.vim'
 " Install vim-autoclose (automatically add closing brackets, braces etc.)
 Plugin 'Townk/vim-autoclose'
-" Install Conque-Shell, integration a Shell into vim as a possible replacement
+" Install vimshell, integration a Shell into vim as a possible replacement
 " for the current windbg
-Plugin 'oplatek/Conque-Shell'
+Plugin 'Shougo/vimshell'
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
