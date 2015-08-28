@@ -65,7 +65,10 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'Townk/vim-autoclose'
 " Install vimshell, integration a Shell into vim as a possible replacement
 " for the current windbg
+Plugin 'Shougo/vimproc'
 Plugin 'Shougo/vimshell'
+" Install vim-fugitive, integrates git commands into vim
+Plugin 'tpope/vim-fugitive'
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
