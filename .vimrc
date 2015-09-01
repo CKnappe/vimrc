@@ -61,8 +61,8 @@ Plugin 'rbgrouleff/bclose.vim'
 Plugin 'danro/rename.vim'
 " Install a.vim (Switch between header and source)
 Plugin 'vim-scripts/a.vim'
-" Install vim-autoclose (automatically add closing brackets, braces etc.)
-Plugin 'Townk/vim-autoclose'
+" Install delimitMate (automatically add closing brackets, braces etc.)
+Plugin 'Raimondi/delimitMate'
 " Install vimshell, integration a Shell into vim as a possible replacement
 " for the current windbg
 Plugin 'Shougo/vimproc'
