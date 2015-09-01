@@ -67,8 +67,8 @@ Plugin 'Townk/vim-autoclose'
 " for the current windbg
 Plugin 'Shougo/vimproc'
 Plugin 'Shougo/vimshell'
-" Install vim-fugitive, integrates git commands into vim
-Plugin 'tpope/vim-fugitive'
+" Install doxygenToolkit, to ease Documentation 
+Plugin 'mrtazz/DoxygenToolkit.vim'
 
 " Default enabled hardtime
 " let g:hardtime_default_on = 1
