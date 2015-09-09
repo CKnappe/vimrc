@@ -291,3 +291,12 @@ autocmd FileType c noremap <buffer> <leader>cf :call Uncrustify('c')<CR>
 autocmd FileType c vnoremap <buffer> <leader>cf :call RangeUncrustify('c')<CR>
 autocmd FileType cpp noremap <buffer> <leader>cf :call Uncrustify('cpp')<CR>
 autocmd FileType cpp vnoremap <buffer> <leader>cf :call RangeUncrustify('cpp')<CR>
+
+function! s:insert_gates()
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename . " "
+  execute "normal! Go#endif /* " . gatename . " */"
+  normal! kk
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
