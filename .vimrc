@@ -98,6 +98,8 @@ let g:ctrlp_user_command = 'ag -l --nocolor --nogroup
                           \ --ignore "*.sln"
                           \ --ignore "*.vcproj"
                           \ --ignore "*.vcxproj"
+                          \ --ignore "*.sdf"
+                          \ --ignore "*.opensdf"
                           \ -g "" %s'
 let g:ctrlp_match_func = { 'match' : 'pymatcher#PyMatch' }
 
@@ -211,7 +213,7 @@ set hidden
 " Make search non case sensitive
 set ignorecase
 
-nmap <silent> <Leader>e :Explore<CR>
+nmap <silent> <Leader>r :Explore<CR>
 
 
 " Enable folding by syntax
@@ -236,10 +238,11 @@ au FileType qf call QFGrep#grep_QuickFix_with_pattern('^||\ \+.*.cpp', 1)
 :autocmd BufReadPost quickfix nnoremap <buffer> R :Copen<CR>G
 
 " Define CPP-Package (Compiler etc. for CPP)
-function! LoadCPPPackage(projectPath, projectType, projectPlatform)
+function! LoadCPPPackage(projectPath, projectType, projectPlatform, outputPath)
     let g:cpp_package_project_path = a:projectPath
     let g:cpp_package_project_type = a:projectType
     let g:cpp_package_project_platform = a:projectPlatform
+    let g:cpp_package_output_path = a:outputPath
     echo "Loading CPP Package"
     nnoremap <leader>j :call DoCompile()<cr>
     nnoremap <leader>k :call DoExecute()<cr>
@@ -273,7 +276,7 @@ function! LoadCPPPackage(projectPath, projectType, projectPlatform)
         let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
 
         execute "!start taskkill /T /F /IM windbg.exe"
-        execute "Spawn windbg -c \"g\" ..\\_output\\".type."\\Engine.exe"
+        execute "Spawn windbg -c \"g\" ".g:cpp_package_output_path
     endfunction
 
     function! DoRetag()
@@ -300,3 +303,5 @@ function! s:insert_gates()
   normal! kk
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+
+map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
