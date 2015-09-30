@@ -250,7 +250,7 @@ function! LoadCPPPackage(projectPath, projectType, projectPlatform, outputPath)
     command! -nargs=* CompleteCompile call DoCompleteCompile(<f-args>)
     command! -nargs=* Compile call DoCompile(<f-args>)
     command! -nargs=* Execute call DoExecute(<f-args>)
-    command! -nargs=0 Retag call DoRetag()
+    command! -nargs=* Retag call DoRetag(<f-args>)
 
     function! DoCompleteCompile(...)
         let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
@@ -279,8 +279,9 @@ function! LoadCPPPackage(projectPath, projectType, projectPlatform, outputPath)
         execute "Spawn windbg -c \"g\" ".g:cpp_package_output_path
     endfunction
 
-    function! DoRetag()
-        execute "Spawn ctags -R -f ../SourceCode/tags ../SourceCode/*"
+    function! DoRetag(...)
+        let path = a:0 >= 1 ? a:1 : "../SourceCode"
+        execute "Spawn ctags -R -f ".path."/tags ".path."/*"
     endfunction
 endfunction
 
