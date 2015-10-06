@@ -251,6 +251,7 @@ function! LoadCPPPackage(projectPath, projectType, projectPlatform, outputPath)
     command! -nargs=* Compile call DoCompile(<f-args>)
     command! -nargs=* Execute call DoExecute(<f-args>)
     command! -nargs=* Retag call DoRetag(<f-args>)
+    command! -nargs=* SelectProject call DoSelectProject(<f-args>)
 
     function! DoCompleteCompile(...)
         let type = a:0 >= 1 ? a:1 : g:cpp_package_project_type
@@ -306,3 +307,5 @@ endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+map <Leader>a :AddInclude<CR>
